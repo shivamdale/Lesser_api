@@ -2,7 +2,8 @@ require 'simplecov'
 SimpleCov.start 'rails' do
     add_group "Models", "app/models"
     add_group "Controllers", "app/controllers"
-    add_group "Multiple Files", ["app/models", "app/controllers"] # You can also pass in an array
+    add_group "Admins", "app/admin"
+    add_group "Multiple Files", ["app/models", "app/controllers", "app/admin"] # You can also pass in an array
     add_group "bx_blocks", %r{bx_block.*}
 end
 
