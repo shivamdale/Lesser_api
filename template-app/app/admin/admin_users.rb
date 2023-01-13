@@ -17,31 +17,46 @@ module AdminUsers
 end
 
 unless AdminUsers::Load.is_loaded_from_gem
-  ActiveAdmin.register AdminUser do
-    permit_params :email, :password, :password_confirmation
+  ActiveAdmin.register AdminUser, as: "Admin Accounts" do
+    permit_params :email, :password, :password_confirmation, :admin_role_id, :image
 
     index do
       selectable_column
       id_column
       column :email
-      column :current_sign_in_at
-      column :sign_in_count
-      column :created_at
+      column :admin_role
+      column "Create Date", :created_at 
       actions
     end
 
     filter :email
-    filter :current_sign_in_at
-    filter :sign_in_count
-    filter :created_at
+    filter :created_at, label: "Create Date"
 
     form do |f|
       f.inputs do
         f.input :email
         f.input :password
-        f.input :password_confirmation
+        f.input :password_confirmation, :required => true
+        f.input :admin_role_id, label: "Role", as: :select, collection: BxBlockRolesPermissions::AdminRole.all.map{|a| [a.name, a.id] }
+        f.input :image, :as => :file
       end
-      f.actions
+      f.actions do
+      if resource.persisted?
+        f.action :submit, label: 'Update', class: 'action input_action'
+      else
+        f.action :submit, label: 'Create User ', class: 'action input_action'
+      end
+      f.action :cancel, as: :link, label: 'Cancel'
+      end
+    end
+
+    show do
+      attributes_table do
+        row :email
+        row :image do |a|
+          image_tag url_for(a.image), size: '100x100' if a.image.present?
+        end
+      end
     end
   end
 end

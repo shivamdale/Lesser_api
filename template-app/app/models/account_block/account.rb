@@ -8,7 +8,9 @@ module AccountBlock
     before_validation :parse_full_phone_number
     before_create :generate_api_key
     has_one :blacklist_user, class_name: 'AccountBlock::BlackListUser', dependent: :destroy
+    belongs_to :role, class_name: 'BxBlockRolesPermissions::Role', optional: true
     after_save :set_black_listed_user
+    has_one_attached :image, dependent: :destroy
 
     enum status: %i[regular suspended deleted]
 
