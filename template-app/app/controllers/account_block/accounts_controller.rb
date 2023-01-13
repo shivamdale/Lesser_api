@@ -49,13 +49,10 @@ module AccountBlock
         ]}, status: :unprocessable_entity if account || !validator.valid?
 
         @account = EmailAccount.new(jsonapi_deserialize(params))
+        @account.activated = true
         @account.platform = request.headers['platform'].downcase if request.headers.include?('platform')
 
         if @account.save
-          EmailAccount.create_stripe_customers(@account)
-          EmailValidationMailer
-            .with(account: @account, host: request.base_url)
-            .activation_email.deliver
           render json: EmailAccountSerializer.new(@account, meta: {
             token: encode(@account.id),
           }).serializable_hash, status: :created
@@ -104,6 +101,14 @@ module AccountBlock
 
     def search_params
       params.permit(:query)
+    end
+
+    def format_activerecord_errors(errors)
+      result = []
+      errors.each do |attribute, error|
+        result << {attribute => error}
+      end
+      result
     end
   end
 end
