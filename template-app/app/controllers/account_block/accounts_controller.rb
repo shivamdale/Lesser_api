@@ -53,10 +53,6 @@ module AccountBlock
         @account.platform = request.headers['platform'].downcase if request.headers.include?('platform')
 
         if @account.save
-          #EmailAccount.create_stripe_customers(@account)
-          # EmailValidationMailer
-          #   .with(account: @account, host: request.base_url)
-          #   .activation_email.deliver
           render json: EmailAccountSerializer.new(@account, meta: {
             token: encode(@account.id),
           }).serializable_hash, status: :created

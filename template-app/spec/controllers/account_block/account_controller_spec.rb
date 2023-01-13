@@ -2,16 +2,19 @@ require 'spec_helper'
 require 'rails_helper'
 
 RSpec.describe AccountBlock::AccountsController, type: :controller do
-    let(:sign_up_params) { 
+    before(:all) do
+      @password = Faker::Internet.password
+    end
+    let(:sign_up_params) {
         {
             "data": {
                 "type": "email_account",
                 "attributes": {
-                    "email": "a@yopmail.com",
-                    "password": "123123123",
-                    "password_confirmation":"123123123",
-                    "first_name": "test_one",
-                    "last_name": "last_one"
+                    "email": Faker::Internet.email,
+                    "password": @password,
+                    "password_confirmation": @password,
+                    "first_name": Faker::Name.first_name,
+                    "last_name": Faker::Name.last_name
                 }
             }
         }
@@ -22,11 +25,11 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
             "data": {
                 "type": "email_account",
                 "attributes": {
-                    "email": "b@yopmail.com",
-                    "password": "123123123",
-                    "password_confirmation": "12312312",
-                    "first_name": "test_one",
-                    "last_name": "last_one"
+                    "email": Faker::Internet.email,
+                    "password": @password,
+                    "password_confirmation": Faker::Internet.password,
+                    "first_name": Faker::Name.first_name,
+                    "last_name": Faker::Name.last_name
                 }
             }
         }
