@@ -9,6 +9,10 @@ module AccountBlock
     before_create :generate_api_key
     has_one :blacklist_user, class_name: 'AccountBlock::BlackListUser', dependent: :destroy
     belongs_to :role, class_name: 'BxBlockRolesPermissions::Role', optional: true
+    belongs_to :gender, optional: :true
+    belongs_to :city, optional: :true
+    belongs_to :country, optional: :true
+    belongs_to :age_group, optional: :true
     after_save :set_black_listed_user
     has_one_attached :image, dependent: :destroy
 
@@ -16,6 +20,7 @@ module AccountBlock
 
     scope :active, -> { where(activated: true) }
     scope :existing_accounts, -> { where(status: ['regular', 'suspended']) }
+    validates :full_phone_number, uniqueness: true
 
     private
 
