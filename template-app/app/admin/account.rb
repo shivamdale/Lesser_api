@@ -1,6 +1,6 @@
 ActiveAdmin.register AccountBlock::Account, as:"User" do
 
-  permit_params :first_name, :last_name, :email, :full_phone_number, :country_code, :phone_number, :activated, :password, :password_confirmation, :image
+  permit_params :first_name, :last_name, :email, :full_phone_number, :country_code, :phone_number, :city_id, :age_group_id, :gender_id, :activated, :password, :password_confirmation, :image
 
   index do
     selectable_column
@@ -10,6 +10,9 @@ ActiveAdmin.register AccountBlock::Account, as:"User" do
     column :email
     column :country_code
     column :phone_number
+    column :city
+    column :gender
+    column :age_group
     column :activated
     actions
   end
@@ -20,6 +23,9 @@ ActiveAdmin.register AccountBlock::Account, as:"User" do
       row :last_name
       row :email
       row :phone_number
+      row :city
+      row :gender
+      row :age_group
       row :activated
       row :created_at
       row :updated_at
@@ -37,6 +43,9 @@ ActiveAdmin.register AccountBlock::Account, as:"User" do
       f.input :last_name
       f.input :email
       f.input :full_phone_number
+      f.input :city_id, label: "City", as: :select, collection: AccountBlock::City.all
+      f.input :gender_id, label: "Gender", as: :select, collection: AccountBlock::Gender.all
+      f.input :age_group_id, label: "Age Group", as: :select, collection: AccountBlock::AgeGroup.all
       f.input :activated, as: :select, collection:  %w[true false]
       f.input :password
       f.input :password_confirmation
