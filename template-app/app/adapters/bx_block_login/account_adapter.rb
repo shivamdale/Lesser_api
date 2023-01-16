@@ -10,12 +10,12 @@ module BxBlockLogin
           full_phone_number: phone,
           activated: true)
       when 'email_account'
-        email = account_params.email.downcase
-
-        account = AccountBlock::EmailAccount
-          .where('LOWER(email) = ?', email)
-          .where(:activated => true)
-          .first
+        if account_params.full_phone_number.present?
+          account = AccountBlock::EmailAccount.where(full_phone_number: account_params.full_phone_number).first
+        else
+          email = account_params.email.downcase
+          account = AccountBlock::EmailAccount.where('LOWER(email) = ?', email).where(:activated => true).first
+        end
       when 'social_account'
         account = AccountBlock::SocialAccount.find_by(
           email: account_params.email.downcase,

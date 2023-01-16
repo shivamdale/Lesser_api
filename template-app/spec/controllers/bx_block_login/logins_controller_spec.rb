@@ -14,7 +14,22 @@ RSpec.describe BxBlockLogin::LoginsController, type: :controller do
                 "type": "email_account",
                 "attributes": {
                     "email": @email_account.email,
-                    "password": @email_account.password               
+                    "password": @email_account.password           
+                }
+            }
+        }
+        res = JSON.parse(response.body)
+        expect(response.code).to eq('200')
+        expect(res["meta"]["token"]).not_to be_nil
+    end
+
+    it 'login by mobile number' do
+        post :create, params: {
+            "data": {
+                "type": "email_account",
+                "attributes": {
+                    "full_phone_number": @email_account.full_phone_number,
+                    "password": @email_account.password           
                 }
             }
         }

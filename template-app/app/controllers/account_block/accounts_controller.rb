@@ -3,6 +3,7 @@ module AccountBlock
     include BuilderJsonWebToken::JsonWebTokenValidation
 
     before_action :validate_json_web_token, only: :search
+    before_action :check_term_and_conditions, only: [:create]
 
     def create
       case params[:data][:type] #### rescue invalid API format
@@ -22,7 +23,6 @@ module AccountBlock
             {phone: 'Confirmed Phone Number was not found'},
           ]}, status: :unprocessable_entity
         end
-
         params[:data][:attributes][:full_phone_number] =
           @sms_otp.full_phone_number
         @account = SmsAccount.new(jsonapi_deserialize(params))
@@ -109,6 +109,10 @@ module AccountBlock
         result << {attribute => error}
       end
       result
+    end
+
+    def check_term_and_conditions
+      render json: {errors: "please accept the term and condition"}, status: :unprocessable_entity unless params["data"]["attributes"][:term_and_conditions] == true
     end
   end
 end
