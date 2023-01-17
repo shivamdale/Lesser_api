@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   namespace :bx_block_login, defaults: { format: :json } do
     resources :logins
   end
+
+  namespace :bx_block_dashboard, defaults: { format: :json } do
+    resources :recycle_bottles
+  end
 end
