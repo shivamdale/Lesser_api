@@ -15,6 +15,7 @@ module AccountBlock
     belongs_to :age_group, optional: :true
     after_save :set_black_listed_user
     has_one_attached :image, dependent: :destroy
+    has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
 
     enum status: %i[regular suspended deleted]
 

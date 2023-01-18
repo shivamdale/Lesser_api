@@ -37,5 +37,10 @@ RSpec.describe AccountBlock::Account, type: :model do
     t = AccountBlock::Account.reflect_on_association(:age_group)
     expect(t.macro).to eq(:belongs_to)
   end
+
+  it "should has_one age recycle bottle" do
+    t = AccountBlock::Account.reflect_on_association(:recycle_bottle)
+    expect(t.macro).to eq(:has_one)
+  end
 end
 
