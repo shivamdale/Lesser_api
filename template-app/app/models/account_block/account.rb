@@ -16,6 +16,8 @@ module AccountBlock
     after_save :set_black_listed_user
     has_one_attached :image, dependent: :destroy
     has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
+    has_many :account_levels
+    has_many :levels, through: :account_levels
 
     enum status: %i[regular suspended deleted]
 

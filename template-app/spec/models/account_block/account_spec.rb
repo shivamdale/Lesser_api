@@ -42,5 +42,15 @@ RSpec.describe AccountBlock::Account, type: :model do
     t = AccountBlock::Account.reflect_on_association(:recycle_bottle)
     expect(t.macro).to eq(:has_one)
   end
+
+  it "should has_many levels" do
+    t = AccountBlock::Account.reflect_on_association(:levels)
+    expect(t.macro).to eq(:has_many)
+  end
+
+  it "should has_many account levels" do
+    t = AccountBlock::Account.reflect_on_association(:account_levels)
+    expect(t.macro).to eq(:has_many)
+  end
 end
 

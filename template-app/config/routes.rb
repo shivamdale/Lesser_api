@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   namespace :bx_block_dashboard, defaults: { format: :json } do
     resources :recycle_bottles
+    resources :bottle_deposit_details
   end
   namespace :bx_block_forgot_password do
     resources :otps, only: %i(create)
@@ -26,5 +27,9 @@ Rails.application.routes.draw do
   namespace :bx_block_profile do
     put "passwords", to:'passwords#update'
     resources :profiles, only: %i(show update)
+  end
+
+  namespace :bx_block_level do
+    resources :account_levels
   end
 end
