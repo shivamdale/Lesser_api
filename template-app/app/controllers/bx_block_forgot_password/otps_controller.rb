@@ -17,7 +17,6 @@ module BxBlockForgotPassword
             otp: 'Account not found',
           }],
         }, status: :not_found if account.nil?
-
         email_otp = AccountBlock::EmailOtp.new(jsonapi_deserialize(params))
         if email_otp.save
           send_email_for email_otp
@@ -61,16 +60,16 @@ module BxBlockForgotPassword
     private
 
     def send_email_for(otp_record)
-      EmailOtpMailer
-        .with(otp: otp_record, host: request.base_url)
-        .otp_email.deliver
+      # EmailOtpMailer
+      #   .with(otp: otp_record, host: request.base_url)
+      #   .otp_email.deliver
     end
 
     def serialized_email_otp(email_otp, account_id)
       token = token_for(email_otp, account_id)
       EmailOtpSerializer.new(
         email_otp,
-        meta: { token: token }
+        meta: { token: token, otp: email_otp.pin }
       ).serializable_hash
     end
 
@@ -78,7 +77,7 @@ module BxBlockForgotPassword
       token = token_for(sms_otp, account_id)
       SmsOtpSerializer.new(
         sms_otp,
-        meta: { token: token }
+        meta: { token: token, otp: sms_otp.pin }
       ).serializable_hash
     end
 

@@ -17,4 +17,14 @@ Rails.application.routes.draw do
   namespace :bx_block_dashboard, defaults: { format: :json } do
     resources :recycle_bottles
   end
+  namespace :bx_block_forgot_password do
+    resources :otps, only: %i(create)
+    resources :otp_confirmations, only: %i(create)
+    resources :passwords, only: %i(create)
+  end
+
+  namespace :bx_block_profile do
+    put "passwords", to:'passwords#update'
+    resources :profiles, only: %i(show update)
+  end
 end

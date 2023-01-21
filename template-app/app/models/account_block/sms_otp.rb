@@ -21,8 +21,8 @@ module AccountBlock
 
     def send_pin_via_sms
       message = "Your Pin Number is #{self.pin}"
-      txt     = BxBlockSms::SendSms.new("+#{self.full_phone_number}", message)
-      txt.call
+      # txt     = BxBlockSms::SendSms.new("+#{self.full_phone_number}", message)
+      # txt.call
     end
 
     private
