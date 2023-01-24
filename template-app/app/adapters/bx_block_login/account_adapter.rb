@@ -5,10 +5,15 @@ module BxBlockLogin
     def login_account(account_params)
       case account_params.type
       when 'sms_account'
-        phone = Phonelib.parse(account_params.full_phone_number).sanitized
-        account = AccountBlock::SmsAccount.find_by(
-          full_phone_number: phone,
-          activated: true)
+        if account_params.full_phone_number.present?
+          phone = Phonelib.parse(account_params.full_phone_number).sanitized
+          account = AccountBlock::SmsAccount.find_by(
+            full_phone_number: phone,
+            activated: true)
+        else
+          email = account_params.email.downcase
+          account = AccountBlock::SmsAccount.where('LOWER(email) = ?', email).where(:activated => true).first
+        end
       when 'email_account'
         if account_params.full_phone_number.present?
           account = AccountBlock::EmailAccount.where(full_phone_number: account_params.full_phone_number).first

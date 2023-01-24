@@ -8,23 +8,6 @@ module AccountBlock
     def create
       case params[:data][:type] #### rescue invalid API format
       when 'sms_account'
-        validate_json_web_token
-
-        unless valid_token?
-          return render json: {errors: [
-            {token: 'Invalid Token'},
-          ]}, status: :bad_request
-        end
-
-        begin
-          @sms_otp = SmsOtp.find(@token[:id])
-        rescue ActiveRecord::RecordNotFound => e
-          return render json: {errors: [
-            {phone: 'Confirmed Phone Number was not found'},
-          ]}, status: :unprocessable_entity
-        end
-        params[:data][:attributes][:full_phone_number] =
-          @sms_otp.full_phone_number
         @account = SmsAccount.new(jsonapi_deserialize(params))
         @account.activated = true
         if @account.save

@@ -5,16 +5,16 @@ RSpec.describe BxBlockLogin::LoginsController, type: :controller do
     include ApiHelper
 
 	before(:all) do
-  	    @email_account = FactoryBot.create(:email_account)
+  	    @sms_account = FactoryBot.create(:sms_account)
     end
 
     it 'login by email' do
         post :create, params: {
             "data": {
-                "type": "email_account",
+                "type": "sms_account",
                 "attributes": {
-                    "email": @email_account.email,
-                    "password": @email_account.password           
+                    "email": @sms_account.email,
+                    "password": @sms_account.password           
                 }
             }
         }
@@ -26,10 +26,10 @@ RSpec.describe BxBlockLogin::LoginsController, type: :controller do
     it 'login by mobile number' do
         post :create, params: {
             "data": {
-                "type": "email_account",
+                "type": "sms_account",
                 "attributes": {
-                    "full_phone_number": @email_account.full_phone_number,
-                    "password": @email_account.password           
+                    "full_phone_number": @sms_account.full_phone_number,
+                    "password": @sms_account.password           
                 }
             }
         }

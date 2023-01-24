@@ -3,12 +3,12 @@ require 'rails_helper'
 
 RSpec.describe BxBlockForgotPassword::OtpsController, type: :controller do
   before(:all) do
-    @email_account = FactoryBot.create(:email_account)
+    @sms_account = FactoryBot.create(:sms_account)
   end
 
-  it 'send forgot password otp for email account' do
+  it 'send forgot password otp for sms account' do
     post :create, params: { data:{ attributes: {
-		                        email: @email_account.email }}}
+		                        full_phone_number: @sms_account.full_phone_number }}}
 
     res =JSON.parse(response.body)
     expect(response.code).to eq('201')
@@ -18,7 +18,7 @@ RSpec.describe BxBlockForgotPassword::OtpsController, type: :controller do
 
   it 'should return error for invalid email' do
     post :create, params: { data:{ attributes: {
-                            email: Faker::Internet.email }}}
+                            full_phone_number: Faker::Base.numerify('+91##########') }}}
     res =JSON.parse(response.body)
     expect(response.code).to eq('404')
     expect(res["errors"][0]["otp"]).to eq("Account not found")
