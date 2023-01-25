@@ -11,7 +11,7 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
     let(:sign_up_params) {
         {
             "data": {
-                "type": "email_account",
+                "type": "sms_account",
                 "attributes": {
                     "email": Faker::Internet.email,
                     "password": @password,
@@ -32,7 +32,7 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
     let(:invalid_password_sign_up_params) { 
         {
             "data": {
-                "type": "email_account",
+                "type": "sms_account",
                 "attributes": {
                     "email": Faker::Internet.email,
                     "password": @password,
@@ -53,7 +53,7 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
     let(:sign_up_params_without_term_and_conditions) {
         {
             "data": {
-                "type": "email_account",
+                "type": "sms_account",
                 "attributes": {
                     "email": Faker::Internet.email,
                     "password": @password,
@@ -75,7 +75,7 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         post :create, params: sign_up_params, as: :json
         res =JSON.parse(response.body)
         expect(response.code).to eq('201')
-        expect(res["data"]["type"]).to eq("email_account")
+        expect(res["data"]["type"]).to eq("sms_account")
     end
 
     it 'give error for inavlid password' do 

@@ -5,12 +5,12 @@ RSpec.describe BxBlockForgotPassword::OtpConfirmationsController, type: :control
   include ApiHelper
 
   before(:all) do
-    @email_otp = FactoryBot.create(:email_otp)
+    @sms_otp = FactoryBot.create(:sms_otp)
   end
 
   it 'activate forgot pasword otp for email' do
-    token = BuilderJsonWebToken.encode(@email_otp.id, 1.day.from_now, type:@email_otp.class)
-    post :create, params: { data: { otp_code: @email_otp.pin,
+    token = BuilderJsonWebToken.encode(@sms_otp.id, 1.day.from_now, type:@sms_otp.class)
+    post :create, params: { data: { otp_code: @sms_otp.pin,
                                       token: token}}
             
     res =JSON.parse(response.body)
@@ -19,7 +19,7 @@ RSpec.describe BxBlockForgotPassword::OtpConfirmationsController, type: :control
   end
 
   it 'should return error of email account for invalid otp' do
-    token = BuilderJsonWebToken.encode(@email_otp.id, 1.day.from_now, type:@email_otp.class)
+    token = BuilderJsonWebToken.encode(@sms_otp.id, 1.day.from_now, type:@sms_otp.class)
     post :create, params: { data:{otp_code: Faker::Number.number,
                                   token: token}}
     res =JSON.parse(response.body)

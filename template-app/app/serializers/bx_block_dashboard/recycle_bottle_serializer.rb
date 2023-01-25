@@ -9,5 +9,11 @@ module BxBlockDashboard
     :rewards,
     :level
     ]
+    attribute :max_number do |object|
+      if object.level.present?
+        level = BxBlockLevel::Level.find_by(name: object.level)
+        level.max_rewards
+      end
+    end
   end
 end

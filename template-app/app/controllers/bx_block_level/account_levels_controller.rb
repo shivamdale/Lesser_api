@@ -10,7 +10,7 @@ module BxBlockLevel
   	  		if account_levels.present?
   	  		  render json: AccountLevelSerializer.new(account_levels).serializable_hash, status: :ok
   	  		else
-                render json: { message: "bottle deposit details doesn't exists" }, status: :not_found
+                render json: { message: "account levels doesn't exists" }, status: :not_found
   	  		end
   	    end
 
