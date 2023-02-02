@@ -40,7 +40,7 @@ RSpec.describe  BxBlockForgotPassword::PasswordsController, type: :controller do
     expect(res["errors"][0]["otp"]).to eq("OTP code not validated")
 
     @sms_otp.update(activated: 'true')
-    post :create, params: { data:{new_password: Faker::Internet.password,
+    post :create, params: { data:{new_password: Faker::Internet.password(min_length: 8, max_length: 12, mix_case: false, special_characters: true),
                                   password_confirmation: Faker::Internet.password,
                                   otp_code: @sms_otp.pin,
                                   token: token}}
