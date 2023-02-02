@@ -13,7 +13,7 @@ module AccountBlock
         # (?=.*[a-z])                             Has one lowercase letter
         # .{8,}                                   Is at least length 8
         # $                                       End anchor
-        /^(?=.*[A-Z])(?=.*[#!@$&*?<>',\[\]}{=\-)(^%`~+.:;_])(?=.*[0-9])(?=.*[a-z]).{8,}$/
+        /^(?=.*[A-Z]).{8,}$/
       end
 
       def regex_string
