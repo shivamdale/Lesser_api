@@ -1,24 +1,18 @@
 module BxBlockLevel
   class AccountLevelSerializer < BuilderBase::BaseSerializer
 
-    attribute :present_level do |object|
-      if object.account.recycle_bottle.level == object.level.name
-        true
-      else
-        false
-      end
+    attribute :rewards do |object|
+      object.account.recycle_bottle.rewards
     end
 
     attribute :level do |object|
       object.level.name
     end
 
-    attribute :min_rewards do |object|
-      object.level.min_rewards
-    end
-
-    attribute :max_rewards do |object|
-      object.level.max_rewards
+    attribute :level_list do |object|
+      BxBlockLevel::Level.all.each do |level|
+        LevelSerializer.new(level)
+      end
     end
   end
 end
