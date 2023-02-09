@@ -7,13 +7,14 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
       @age_group = FactoryBot.create(:age_group)
       @gender = FactoryBot.create(:gender)
       @city = FactoryBot.create(:city)
+      @email = Faker::Internet.email
     end
     let(:sign_up_params) {
         {
             "data": {
                 "type": "sms_account",
                 "attributes": {
-                    "email": Faker::Internet.email,
+                    "email": @email,
                     "password": @password,
                     "password_confirmation": @password,
                     "first_name": Faker::Name.first_name,
@@ -76,6 +77,14 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         res =JSON.parse(response.body)
         expect(response.code).to eq('201')
         expect(res["data"]["type"]).to eq("sms_account")
+    end
+
+    it 'give error when create account signup with existing email' do
+        post :create, params: sign_up_params, as: :json
+        post :create, params: sign_up_params, as: :json
+        res =JSON.parse(response.body)
+        expect(response.code).to eq('422')
+        expect(res["errors"][1]["email"]).to eq("has already been taken")
     end
 
     it 'give error for inavlid password' do 
