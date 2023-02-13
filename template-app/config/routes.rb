@@ -32,4 +32,8 @@ Rails.application.routes.draw do
   namespace :bx_block_level do
     resources :account_levels
   end
+
+  namespace :bx_block_push_notifications do
+    resources :push_notifications
+  end
 end

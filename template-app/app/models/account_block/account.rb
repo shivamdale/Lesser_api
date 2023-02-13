@@ -25,6 +25,11 @@ module AccountBlock
     scope :existing_accounts, -> { where(status: ['regular', 'suspended']) }
     validates :full_phone_number, uniqueness: true
 
+    def send_push_notifications
+      message = "Hello #{self.first_name} Welcome into our Lesser Green Community, we are delighted to see you recycling with us. We have been working in the field of recycling in Saudi for more than 11 years and by using the application, you can also get to recycle with us. Best, Lesser Team"
+      push_notification = self.push_notifications.create(account_id: self.id, remarks: message)
+    end
+
     private
 
     def parse_full_phone_number
@@ -57,6 +62,5 @@ module AccountBlock
         end
       end
     end
-
   end
 end

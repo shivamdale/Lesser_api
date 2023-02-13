@@ -10,7 +10,9 @@ module AccountBlock
       when 'sms_account'
         @account = SmsAccount.new(jsonapi_deserialize(params))
         @account.activated = true
+        @account.device_id = params[:data][:device_id]
         if @account.save
+          @account.send_push_notifications
           render json: SmsAccountSerializer.new(@account, meta: {
             token: encode(@account.id)
           }).serializable_hash, status: :created
