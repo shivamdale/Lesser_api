@@ -8,7 +8,7 @@ class BxBlockPushNotifications::PushNotificationWorker
       push_notification = BxBlockPushNotifications::PushNotification.find_by_id(push_notification_id)
       device_id = AccountBlock::Account.find_by(id: push_notification.account_id).device_id
       if push_notification.push_notificable.activated && push_notification.push_notificable.device_id
-        fcm_client = FCM.new('AAAAbPVP7PI:APA91bGrSncNSqYz9ochNmI22oZQDolHGxY996176rI9pbCZLL_QqStkjQ9QRbQjZG1SQ-VcpPaC83Ijdj3_zMvf8CgTjQJy0v2jmLTzZEJbqSSQD1MHGYL-lXWUbHNFCLMB8ofrYlRg') # set your FCM_SERVER_KEY
+        fcm_client = FCM.new(ENV['FCM_SEVER_KEY']) # set your FCM_SERVER_KEY
         options = { priority: 'high',
                     data: {
                       message: push_notification.remarks,
