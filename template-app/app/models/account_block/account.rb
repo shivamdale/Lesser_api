@@ -18,6 +18,7 @@ module AccountBlock
     has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
     has_many :account_levels
     has_many :levels, through: :account_levels
+    has_many :devices
 
     enum status: %i[regular suspended deleted]
 
@@ -25,8 +26,8 @@ module AccountBlock
     scope :existing_accounts, -> { where(status: ['regular', 'suspended']) }
     validates :full_phone_number, uniqueness: true
 
-    def send_push_notifications
-      message = "Hello #{self.first_name} Welcome into our Lesser Green Community, we are delighted to see you recycling with us. We have been working in the field of recycling in Saudi for more than 11 years and by using the application, you can also get to recycle with us. Best, Lesser Team"
+    def send_deposit_bottle_notifications(no_of_bottles)
+      message = "#{no_of_bottles} bottles. Thank you, your bottles was deposited. Rewards points will be added to your account soon. X CO2 saved. "
       self.push_notifications.create(account_id: self.id, remarks: message)
     end
 

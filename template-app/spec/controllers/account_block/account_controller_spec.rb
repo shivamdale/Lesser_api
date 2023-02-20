@@ -72,6 +72,27 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         }
     }
 
+    let(:invalide_account_type_sign_up_params) {
+        {
+            "data": {
+                "type": "smss_account",
+                "attributes": {
+                    "email": @email,
+                    "password": @password,
+                    "password_confirmation": @password,
+                    "first_name": Faker::Name.first_name,
+                    "last_name": Faker::Name.last_name,
+                    "term_and_conditions": true,
+                    "age_group_id": @age_group.id,
+                    "gender_id": @gender.id,
+                    "city_id": @city.id,
+                    "district": Faker::Address.city,
+                    "full_phone_number": Faker::PhoneNumber.phone_number
+                }
+            }
+        }
+    }
+
     it 'create account signup' do
         post :create, params: sign_up_params, as: :json
         res =JSON.parse(response.body)
@@ -99,5 +120,12 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         res =JSON.parse(response.body)
         expect(response.code).to eq('422')
         expect(res["errors"]).to eq("please accept the term and condition")
+    end
+
+    it 'invalide  account type signup' do
+        post :create, params: invalide_account_type_sign_up_params, as: :json
+        res =JSON.parse(response.body)
+        expect(response.code).to eq('422')
+        expect(res["errors"][0]["account"]).to eq("Invalid Account Type")
     end
 end

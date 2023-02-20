@@ -52,5 +52,10 @@ RSpec.describe AccountBlock::Account, type: :model do
     t = AccountBlock::Account.reflect_on_association(:account_levels)
     expect(t.macro).to eq(:has_many)
   end
+
+  it "should has_many devices" do
+    t = AccountBlock::Account.reflect_on_association(:devices)
+    expect(t.macro).to eq(:has_many)
+  end
 end
 
