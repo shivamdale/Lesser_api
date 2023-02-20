@@ -1,0 +1,3 @@
+# fetch_account_data:
+#    cron: "*/3 * * * *"
+#    class: "BxBlockAccounts::FetchAccountData"
