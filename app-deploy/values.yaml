@@ -35,12 +35,12 @@ fullnameOverride: ""
 probes:
   livenessProbe:
     path: /healthcheck
-    initialDelaySeconds: 40
-    periodSeconds: 10
+    initialDelaySeconds: 120
+    periodSeconds: 40
   readinessProbe:
     path: /healthcheck
-    initialDelaySeconds: 40
-    periodSeconds: 20
+    initialDelaySeconds: 120
+    periodSeconds: 40
 
 probesSidekiq:
   livenessProbe:
