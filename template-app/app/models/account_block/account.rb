@@ -13,7 +13,6 @@ module AccountBlock
     belongs_to :city, optional: :true
     belongs_to :country, optional: :true
     belongs_to :age_group, optional: :true
-    after_save :set_black_listed_user
     has_one_attached :image, dependent: :destroy
     has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
     has_many :account_levels
@@ -40,28 +39,12 @@ module AccountBlock
       self.phone_number      = phone.raw_national
     end
 
-    def valid_phone_number
-      unless Phonelib.valid?(full_phone_number)
-        errors.add(:full_phone_number, "Invalid or Unrecognized Phone Number")
-      end
-    end
-
     def generate_api_key
       loop do
         @token = SecureRandom.base64.tr('+/=', 'Qrt')
         break @token unless Account.exists?(unique_auth_id: @token)
       end
       self.unique_auth_id = @token
-    end
-
-    def set_black_listed_user
-      if is_blacklisted_previously_changed?
-        if is_blacklisted
-          AccountBlock::BlackListUser.create(account_id: id)
-        else
-          blacklist_user.destroy
-        end
-      end
     end
   end
 end
