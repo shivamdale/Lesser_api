@@ -20,6 +20,7 @@ appExtConfig:
   # A change to RAILS_MAX_THREADS might affect the 
   # resource limits set below so that needs to be taken into consideration.
   RAILS_MAX_THREADS: "10"
+  FCM_SEVER_KEY: "AAAAbPVP7PI:APA91bGrSncNSqYz9ochNmI22oZQDolHGxY996176rI9pbCZLL_QqStkjQ9QRbQjZG1SQ-VcpPaC83Ijdj3_zMvf8CgTjQJy0v2jmLTzZEJbqSSQD1MHGYL-lXWUbHNFCLMB8ofrYlRg"
 
 image:
   repository:  gitlab.builder.ai:5000/template-app
