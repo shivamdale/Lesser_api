@@ -13,11 +13,11 @@ module AccountBlock
     belongs_to :city, optional: :true
     belongs_to :country, optional: :true
     belongs_to :age_group, optional: :true
-    after_save :set_black_listed_user
     has_one_attached :image, dependent: :destroy
     has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
     has_many :account_levels
     has_many :levels, through: :account_levels
+    has_many :devices
 
     enum status: %i[regular suspended deleted]
 
@@ -25,8 +25,8 @@ module AccountBlock
     scope :existing_accounts, -> { where(status: ['regular', 'suspended']) }
     validates :full_phone_number, uniqueness: true
 
-    def send_push_notifications
-      message = "Hello #{self.first_name} Welcome into our Lesser Green Community, we are delighted to see you recycling with us. We have been working in the field of recycling in Saudi for more than 11 years and by using the application, you can also get to recycle with us. Best, Lesser Team"
+    def send_deposit_bottle_notifications(no_of_bottles)
+      message = "#{no_of_bottles} bottles. Thank you, your bottles was deposited. Rewards points will be added to your account soon. X CO2 saved. "
       self.push_notifications.create(account_id: self.id, remarks: message)
     end
 
@@ -39,28 +39,12 @@ module AccountBlock
       self.phone_number      = phone.raw_national
     end
 
-    def valid_phone_number
-      unless Phonelib.valid?(full_phone_number)
-        errors.add(:full_phone_number, "Invalid or Unrecognized Phone Number")
-      end
-    end
-
     def generate_api_key
       loop do
         @token = SecureRandom.base64.tr('+/=', 'Qrt')
         break @token unless Account.exists?(unique_auth_id: @token)
       end
       self.unique_auth_id = @token
-    end
-
-    def set_black_listed_user
-      if is_blacklisted_previously_changed?
-        if is_blacklisted
-          AccountBlock::BlackListUser.create(account_id: id)
-        else
-          blacklist_user.destroy
-        end
-      end
     end
   end
 end

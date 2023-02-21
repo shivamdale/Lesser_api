@@ -25,6 +25,12 @@ module BxBlockLogin
         end
 
         output.on(:successful_login) do |account, token, refresh_token|
+          if params['data']['device_id'].present?
+            unless AccountBlock::Device.find_by(device_id: params['data']['device_id']).present?
+              device = account.devices.new(device_id: params['data']['device_id'])
+              device.save
+            end
+          end
           render json: {meta: {
             token: token,
             refresh_token: refresh_token,
