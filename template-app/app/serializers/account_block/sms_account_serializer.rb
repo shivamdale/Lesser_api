@@ -1,5 +1,5 @@
 module AccountBlock
-  class SmsAccountSerializer
+  class SmsAccountSerializer < BuilderBase::BaseSerializer
     include FastJsonapi::ObjectSerializer
 
     attributes *[
@@ -9,7 +9,16 @@ module AccountBlock
       :country_code,
       :phone_number,
       :email,
-      :activated,
+      :activated
     ]
+
+    attribute :full_name do |object|
+      object.full_name
+    end
+
+    attribute :qr_image_url do |object|
+      Rails.application.routes.url_helpers.rails_blob_url(object.qr_code.qr_code, host: base_url)
+    end
+
   end
 end
