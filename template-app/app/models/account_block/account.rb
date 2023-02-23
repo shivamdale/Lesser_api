@@ -14,10 +14,10 @@ module AccountBlock
     belongs_to :country, optional: :true
     belongs_to :age_group, optional: :true
     has_one_attached :image, dependent: :destroy
-    has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle'
-    has_many :account_levels
+    has_one :recycle_bottle, class_name: 'BxBlockDashboard::RecycleBottle',dependent: :destroy
+    has_many :account_levels, dependent: :destroy
     has_many :levels, through: :account_levels
-    has_many :devices
+    has_many :devices, dependent: :destroy
 
     enum status: %i[regular suspended deleted]
 

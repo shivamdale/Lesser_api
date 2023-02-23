@@ -3,7 +3,7 @@ module AccountBlock
     include Wisper::Publisher
     validates :full_phone_number, uniqueness: true, presence: true
     validates :email, uniqueness: true, presence: true
-    has_many :push_notifications, as: :push_notificable, class_name: "BxBlockPushNotifications::PushNotification"
+    has_many :push_notifications, as: :push_notificable, class_name: "BxBlockPushNotifications::PushNotification", dependent: :destroy
     has_one :qr_code, as: :qrable, class_name: 'BxBlockQrCodes::QrCode', dependent: :destroy
     after_create :create_qr_code, :generate_qr
 

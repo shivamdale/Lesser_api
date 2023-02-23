@@ -2,12 +2,14 @@ require 'spec_helper'
 require 'rails_helper'
 
 RSpec.describe AccountBlock::AccountsController, type: :controller do
+  include ApiHelper
     before(:all) do
       @password = Faker::Internet.password
       @age_group = FactoryBot.create(:age_group)
       @gender = FactoryBot.create(:gender)
       @city = FactoryBot.create(:city)
       @email = Faker::Internet.email
+      @account = FactoryBot.create(:sms_account)
     end
     let(:sign_up_params) {
         {
@@ -93,6 +95,24 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         }
     }
 
+
+    let(:user_update_params){
+      {
+        "data": {
+          "type": "sms_account",
+          "attributes": {
+              "email": "ab21@yopmail.com",
+              "first_name": "test_one",
+              "last_name": "last_one",
+              "full_phone_number": "6261779317",
+              "city_id": 1,
+              "gender_id": 1,
+              "age_group_id": 1
+          }          
+        }
+      }  
+    }
+
     it 'create account signup' do
         post :create, params: sign_up_params, as: :json
         res =JSON.parse(response.body)
@@ -127,5 +147,24 @@ RSpec.describe AccountBlock::AccountsController, type: :controller do
         res =JSON.parse(response.body)
         expect(response.code).to eq('422')
         expect(res["errors"][0]["account"]).to eq("Invalid Account Type")
+    end
+
+    it 'get user details QR code' do
+      authenticated_header(request, @account)
+      get 'get_details', as: :json
+      expect(response.code).to eq('200') 
+    end
+
+    it 'edit user details ' do
+      authenticated_header(request, @account)
+      put 'edit_profile', params: user_update_params, as: :json
+      expect(response.code).to eq('200') 
+    end
+
+    it 'delete user' do
+      authenticated_header(request, @account)
+      delete 'delete_user', as: :json
+      data = JSON.parse(response.body)
+      expect(data).to eq({"message"=>"user deleted"}) 
     end
 end

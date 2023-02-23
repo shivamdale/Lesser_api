@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   namespace :account_block, defaults: { format: :json } do
+    delete 'delete_user', to: 'accounts#delete_user'
+    put 'edit_profile', to: 'accounts#edit_profile'
     get 'get_details', to: 'accounts#get_details'
     resources :accounts
     resources :age_groups, only: :index

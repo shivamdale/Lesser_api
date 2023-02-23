@@ -3,8 +3,8 @@ module AccountBlock
     include BuilderJsonWebToken::JsonWebTokenValidation
     before_action :check_term_and_conditions, only: [:create]
 
-    before_action :validate_json_web_token, only: [:get_details]
-    before_action :current_user, only: [:get_details]
+    before_action :validate_json_web_token, only: [:get_details, :edit_profile,:delete_user]
+    before_action :current_user, only: [:get_details,:delete_user, :edit_profile]
 
     def create
       if params[:data][:type] ==  'sms_account'
@@ -29,6 +29,17 @@ module AccountBlock
       render json: SmsAccountSerializer.new(@current_user).serializable_hash, status: :ok
     end
 
+    def edit_profile
+    @current_user.update(user_params)
+    render json: SmsAccountSerializer.new(@current_user).serializable_hash, status: :ok
+    end
+    
+    def delete_user
+    @current_user.destroy
+    render json: {message: "user deleted"}, status: :created
+    end
+
+
     private
 
       def encode(id)
@@ -50,6 +61,10 @@ module AccountBlock
       def current_user
         return unless @token
         @current_user ||= AccountBlock::Account.find(@token.id)
+      end
+
+      def user_params
+        params.require(:data)[:attributes].permit(:email,:first_name,:last_name,:full_phone_number,:city_id,:gender_id,:age_group_id)
       end
 
   end
